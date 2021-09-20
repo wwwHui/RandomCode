@@ -56,11 +56,11 @@ def run():
 
     with open(out_color_path, "wb") as out:
         color_pdf_writer.write(out)
-        print("created", out_color_path)
+        print(datetime.datetime.now(), "created", out_color_path)
     
     with open(out_gray_path, "wb") as out:
         gray_pdf_writer.write(out)
-        print("created", out_gray_path)
+        print(datetime.datetime.now(), "created", out_gray_path)
 
 
 # 主函数
