@@ -5,7 +5,9 @@ random code
 保存一些相对随意的代码
 
 ## 目录
-[视频(图片)转PDF](https://github.com/wwwHui/RandomCode/tree/main/video2pdf) 
+[视频(图片)转PDF](video2pdf) 
 
-[分离彩色PDF页面](https://github.com/wwwHui/RandomCode/tree/main/ColorfulPDFPages) 
+[分离彩色PDF页面](ColorfulPDFPages) 
 
+## License
+This project is released under [Apache 2.0 license](LICENSE)
