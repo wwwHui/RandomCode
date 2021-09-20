@@ -4,7 +4,7 @@
 @Time   : 2021/09/19 14:48
 @author : hui
 @file   : main.py
-@desc   :  依据打印要求，提取PDF中的彩图页面
+@desc   :  依据打印要求，分离PDF中的彩色和黑白页面
             参考连接  https://www.cnblogs.com/neuedu/p/14188218.html
 """
 
@@ -19,10 +19,11 @@ def run():
     提取PDF页面
     """
     path = 'file.pdf'  # 原始PDF地址
-    out_path = "out.pdf"  # 输出PDF地址
+    out_color_path = "out-color.pdf"  # 彩色PDF保存地址
+    out_gray_path = "out-gray.pdf"  # 黑白PDF保存地址
     double_sided = True  # True:表示双面打印 False:表示单面打印
     pdf_document = fitz.open(path)
-    page_list = []
+    color_page_list = []
     index = 0
     while index < len(pdf_document):
         for image in pdf_document.getPageImageList(index):
@@ -31,28 +32,35 @@ def run():
             if pix.n > 1:  # 彩图
                 if double_sided:
                     if index % 2 :
-                        page_list.append(index-1)
-                        page_list.append(index)
+                        color_page_list.append(index-1)
+                        color_page_list.append(index)
                     else:
-                        page_list.append(index)
-                        page_list.append(index+1)
+                        color_page_list.append(index)
+                        color_page_list.append(index+1)
                         index += 1
                 else:
-                    page_list.append(index)
+                    color_page_list.append(index)
                 break
         index += 1
-    print(page_list)
+    print(color_page_list)
 
     pdf = PdfFileReader(path)
-    pdf_writer = PdfFileWriter()
-    for index in page_list:
+    color_pdf_writer = PdfFileWriter()
+    gray_pdf_writer = PdfFileWriter()
+    for index in range(pdf.getNumPages()):
         page = pdf.getPage(index)
+        if index in color_page_list:
+            color_pdf_writer.addPage(page)
+        else:
+            gray_pdf_writer.addPage(page)
 
-        pdf_writer.addPage(page)
-
-    with open(out_path, "wb") as out:
-        pdf_writer.write(out)
-        print("created", out_path)
+    with open(out_color_path, "wb") as out:
+        color_pdf_writer.write(out)
+        print("created", out_color_path)
+    
+    with open(out_gray_path, "wb") as out:
+        gray_pdf_writer.write(out)
+        print("created", out_gray_path)
 
 
 # 主函数
